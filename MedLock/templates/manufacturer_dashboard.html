@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - MedLock{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-tachometer-alt me-2"></i>Manufacturer Dashboard</h2>
+        <div>
+            <a href="{{ url_for('batch_upload') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Upload New Batch
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-boxes fa-3x text-primary mb-3"></i>
+                    <h3 class="card-title">{{ batches|length }}</h3>
+                    <p class="card-text">Total Batches</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-qrcode fa-3x text-success mb-3"></i>
+                    <h3 class="card-title">{{ batches|length }}</h3>
+                    <p class="card-text">QR Codes Generated</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-shield-alt fa-3x text-info mb-3"></i>
+                    <h3 class="card-title">Active</h3>
+                    <p class="card-text">Account Status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mb-3">Your Batches</h3>
+    
+    {% if batches %}
+    <div class="row">
+        {% for batch in batches %}
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ batch.medicine_name }}</h5>
+                    <span class="badge bg-primary">{{ batch.batch_id }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <strong>Batch ID:</strong><br>
+                            <code>{{ batch.batch_id }}</code>
+                        </div>
+                        <div class="col-6">
+                            <strong>Expiry Date:</strong><br>
+                            <span class="text-muted">{{ batch.expiry_date }}</span>
+                        </div>
+                        <div class="col-12">
+                            <strong>Created:</strong><br>
+                            <small class="text-muted">{{ batch.created_at[:19].replace('T', ' ') }}</small>
+                        </div>
+                        <div class="col-12 text-center">
+                            <img src="{{ url_for('static', filename='qr_codes/' + batch.qr_code) }}" 
+                                 alt="QR Code for {{ batch.batch_id }}" 
+                                 class="img-fluid" 
+                                 style="max-width: 150px;">
+                            <br>
+                            <small class="text-muted">QR Code for verification</small>
+                        </div>
+                        <div class="col-12">
+                            <a href="{{ url_for('verify_batch', batch_id=batch.batch_id) }}" 
+                               class="btn btn-outline-primary btn-sm w-100" target="_blank">
+                                <i class="fas fa-external-link-alt me-1"></i>Test Verification
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-box-open fa-4x text-muted mb-3"></i>
+        <h4 class="text-muted">No batches uploaded yet</h4>
+        <p class="text-muted">Start by uploading your first medicine batch to generate QR codes.</p>
+        <a href="{{ url_for('batch_upload') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Upload First Batch
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

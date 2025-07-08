@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Batch - MedLock{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            {% if show_qr %}
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-check-circle me-2"></i>Batch Upload Successful!
+                    </h4>
+                </div>
+                <div class="card-body text-center">
+                    <h5>{{ batch.medicine_name }}</h5>
+                    <p class="text-muted">Batch ID: <code>{{ batch.batch_id }}</code></p>
+                    <div class="my-4">
+                        <img src="{{ url_for('static', filename='qr_codes/' + batch.qr_code) }}" 
+                             alt="QR Code" 
+                             class="img-fluid" 
+                             style="max-width: 200px;">
+                    </div>
+                    <p class="small text-muted mb-3">
+                        Save this QR code and attach it to your medicine packaging.
+                        Customers can scan this code to verify authenticity.
+                    </p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <a href="{{ url_for('verify_batch', batch_id=batch.batch_id) }}" 
+                           class="btn btn-outline-primary" target="_blank">
+                            <i class="fas fa-external-link-alt me-1"></i>Test Verification
+                        </a>
+                        <a href="{{ url_for('batch_upload') }}" class="btn btn-primary">
+                            <i class="fas fa-plus me-1"></i>Upload Another Batch
+                        </a>
+                        <a href="{{ url_for('manufacturer_dashboard') }}" class="btn btn-secondary">
+                            <i class="fas fa-tachometer-alt me-1"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-upload me-2"></i>Upload Medicine Batch
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="batch_id" class="form-label">Batch ID</label>
+                            <input type="text" class="form-control" id="batch_id" name="batch_id" 
+                                   placeholder="e.g., BATCH2025001" required>
+                            <div class="form-text">Unique identifier for this medicine batch</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="medicine_name" class="form-label">Medicine Name</label>
+                            <input type="text" class="form-control" id="medicine_name" name="medicine_name" 
+                                   placeholder="e.g., Paracetamol 500mg" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="expiry_date" class="form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="expiry_date" name="expiry_date" required>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Note:</strong> After uploading, a unique QR code will be generated for this batch. 
+                            This QR code should be attached to the medicine packaging for verification purposes.
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-upload me-2"></i>Upload Batch & Generate QR Code
+                            </button>
+                            <a href="{{ url_for('manufacturer_dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+// Set minimum date to today
+document.getElementById('expiry_date').min = new Date().toISOString().split('T')[0];
+</script>
+{% endblock %}

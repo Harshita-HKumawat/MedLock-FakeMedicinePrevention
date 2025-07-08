@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - MedLock{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-user-shield me-2"></i>Admin Dashboard</h2>
+        <span class="badge bg-primary">{{ manufacturers|length }} Manufacturers</span>
+    </div>
+
+    {% if manufacturers %}
+    <div class="row">
+        {% for manufacturer in manufacturers %}
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">{{ manufacturer.company_name }}</h5>
+                    {% if manufacturer.approved %}
+                        <span class="badge bg-success">Approved</span>
+                    {% else %}
+                        <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <strong>Email:</strong> {{ manufacturer.email }}
+                        </div>
+                        <div class="col-6">
+                            <strong>GST Number:</strong><br>
+                            <small class="text-muted">{{ manufacturer.gst_number }}</small>
+                        </div>
+                        <div class="col-6">
+                            <strong>License Number:</strong><br>
+                            <small class="text-muted">{{ manufacturer.license_number }}</small>
+                        </div>
+                        <div class="col-12">
+                            <strong>Registration Date:</strong><br>
+                            <small class="text-muted">{{ manufacturer.created_at[:19].replace('T', ' ') }}</small>
+                        </div>
+                        <div class="col-12">
+                            <a href="{{ url_for('view_document', filename=manufacturer.license_file) }}" class="btn btn-info btn-sm" target="_blank">
+                                <i class="fas fa-file-alt me-1"></i>View License Document
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {% if not manufacturer.approved %}
+                    <div class="mt-3 d-flex gap-2">
+                        <a href="{{ url_for('approve_manufacturer', manufacturer_id=manufacturer.id) }}" class="btn btn-success btn-sm">
+                            <i class="fas fa-check me-1"></i>Approve
+                        </a>
+                        <a href="{{ url_for('reject_manufacturer', manufacturer_id=manufacturer.id) }}" class="btn btn-danger btn-sm" 
+                           onclick="return confirm('Are you sure you want to reject this manufacturer?')">
+                            <i class="fas fa-times me-1"></i>Reject
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-users fa-4x text-muted mb-3"></i>
+        <h4 class="text-muted">No manufacturers registered yet</h4>
+        <p class="text-muted">New manufacturer registrations will appear here for approval.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
