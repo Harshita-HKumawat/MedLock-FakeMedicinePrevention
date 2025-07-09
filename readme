@@ -138,14 +138,7 @@ MedLock is an enhanced Flask-based medicine authenticity platform with advanced 
 - JSON storage may need migration to proper database for production
 - Static file serving should use CDN or web server in production
 
-## Changelog
 
-```
-Changelog:
-- July 08, 2025. Initial setup
-```
-
-## User Preferences
 
 ```
 Preferred communication style: Simple, everyday language.
