@@ -1,0 +1,126 @@
+[
+  {
+    "batch_id": "BATCH1233455",
+    "medicine_name": "amoxi560mg",
+    "manufacturer_id": "9c1ae21f-73ad-4302-a032-c25d175c8819",
+    "manufacturer_name": "palak",
+    "manufacturer_license": "DL-2222-6666-4444-8888",
+    "manufacturing_date": "2025-07-30",
+    "expiry_date": "2029-07-09",
+    "dosage": "half tablet ",
+    "description": "",
+    "qr_filename": "SECURE_BATCH1233455_c82fd783.png",
+    "qr_security_data": {
+      "qr_data": "MEDLOCK:BATCH1233455:c82fd783892bde6c:DL-2222-:1752077086",
+      "full_hash": "c82fd783892bde6c812ba9439d8a0189c7fe7d10ea4805f31042ad993fa23003",
+      "qr_components": {
+        "batch_id": "BATCH1233455",
+        "signed_hash": "c82fd783892bde6c",
+        "manufacturer": "DL-2222-",
+        "timestamp": 1752077086,
+        "version": "2.0"
+      },
+      "security_level": "high"
+    },
+    "blockchain_hash": "c82fd783892bde6c812ba9439d8a0189c7fe7d10ea4805f31042ad993fa23003",
+    "blockchain_tx": "0x5f31a5b15b6ffda05d5e8f94208490d2c57357e5f7d014f1ebea0d51cac8f194",
+    "upload_date": "2025-07-09T21:34:46.693087",
+    "scan_count": 0,
+    "last_scanned": null,
+    "security_level": "ultra_high",
+    "ai_verified": true
+  },
+  {
+    "batch_id": "BATCH12334678",
+    "medicine_name": "amoxi560mg",
+    "manufacturer_id": "9c1ae21f-73ad-4302-a032-c25d175c8819",
+    "manufacturer_name": "palak",
+    "manufacturer_license": "DL-2222-6666-4444-8888",
+    "manufacturing_date": "2025-07-30",
+    "expiry_date": "2029-07-09",
+    "dosage": "half tablet ",
+    "description": "",
+    "qr_filename": "SECURE_BATCH12334678_afa41963.png",
+    "qr_security_data": {
+      "qr_data": "MEDLOCK:BATCH12334678:afa419632bc3624f:DL-2222-:1752078114",
+      "full_hash": "afa419632bc3624fb642ec66bf1bea2d698f51acb29de0b6dcad8b8856b4b714",
+      "qr_components": {
+        "batch_id": "BATCH12334678",
+        "signed_hash": "afa419632bc3624f",
+        "manufacturer": "DL-2222-",
+        "timestamp": 1752078114,
+        "version": "2.0"
+      },
+      "security_level": "high"
+    },
+    "blockchain_hash": "afa419632bc3624fb642ec66bf1bea2d698f51acb29de0b6dcad8b8856b4b714",
+    "blockchain_tx": "0xee7434f038607e33ec12ecc431ab26b1d6ebc35c7aae156b8fa4d9fb235f3ffc",
+    "upload_date": "2025-07-09T21:51:54.949607",
+    "scan_count": 0,
+    "last_scanned": null,
+    "security_level": "ultra_high",
+    "ai_verified": true
+  },
+  {
+    "batch_id": "BATCH123347854",
+    "medicine_name": "amoxi560mg",
+    "manufacturer_id": "9c1ae21f-73ad-4302-a032-c25d175c8819",
+    "manufacturer_name": "palak",
+    "manufacturer_license": "DL-2222-6666-4444-8888",
+    "manufacturing_date": "2025-07-30",
+    "expiry_date": "2029-07-09",
+    "dosage": "half tablet ",
+    "description": "",
+    "qr_filename": "SECURE_BATCH123347854_7b3709ab.png",
+    "qr_security_data": {
+      "qr_data": "MEDLOCK:BATCH123347854:7b3709aba75b1dd7:DL-2222-:1752083010",
+      "full_hash": "7b3709aba75b1dd7a1bd4440ba7cc3f9ac114d9f183a35da97c63054f29103ac",
+      "qr_components": {
+        "batch_id": "BATCH123347854",
+        "signed_hash": "7b3709aba75b1dd7",
+        "manufacturer": "DL-2222-",
+        "timestamp": 1752083010,
+        "version": "2.0"
+      },
+      "security_level": "high"
+    },
+    "blockchain_hash": "7b3709aba75b1dd7a1bd4440ba7cc3f9ac114d9f183a35da97c63054f29103ac",
+    "blockchain_tx": "0xfecbc951fbd3c6d02c0bb6e065591c2bb2a1ffebfd88f04f2049b4a0afd4cec7",
+    "upload_date": "2025-07-09T23:13:30.879774",
+    "scan_count": 0,
+    "last_scanned": null,
+    "security_level": "ultra_high",
+    "ai_verified": true
+  },
+  {
+    "batch_id": "BATCH",
+    "medicine_name": "amoxi560mg",
+    "manufacturer_id": "9c1ae21f-73ad-4302-a032-c25d175c8819",
+    "manufacturer_name": "palak",
+    "manufacturer_license": "DL-2222-6666-4444-8888",
+    "manufacturing_date": "2025-07-30",
+    "expiry_date": "2029-07-09",
+    "dosage": "half tablet ",
+    "description": "",
+    "qr_filename": "SECURE_BATCH_6055a65d.png",
+    "qr_security_data": {
+      "qr_data": "MEDLOCK:BATCH:6055a65d2d39d635:DL-2222-:1752083031",
+      "full_hash": "6055a65d2d39d63541a94dbca0592986eae0f0ccf8a54386ebd69160263ceac2",
+      "qr_components": {
+        "batch_id": "BATCH",
+        "signed_hash": "6055a65d2d39d635",
+        "manufacturer": "DL-2222-",
+        "timestamp": 1752083031,
+        "version": "2.0"
+      },
+      "security_level": "high"
+    },
+    "blockchain_hash": "6055a65d2d39d63541a94dbca0592986eae0f0ccf8a54386ebd69160263ceac2",
+    "blockchain_tx": "0xe17ccb3296ced69db38919e9a8aa00f865d6b15ca914cb96cf3e5b7f9916df36",
+    "upload_date": "2025-07-09T23:13:51.825782",
+    "scan_count": 0,
+    "last_scanned": null,
+    "security_level": "ultra_high",
+    "ai_verified": true
+  }
+]

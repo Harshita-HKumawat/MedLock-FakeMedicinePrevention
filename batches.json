@@ -1,0 +1,71 @@
+[
+  {
+    "batch_id": "PC-ASP-240701-001",
+    "medicine_name": "Aspirin 75mg",
+    "manufacturer_id": "a9855b88-6fa2-4067-9e06-f8e017b75124",
+    "manufacturer_name": "PharmaCorp Industries",
+    "manufacturer_license": "PHM-2024-001-DELHI",
+    "manufacturing_date": "2024-07-01",
+    "expiry_date": "2026-07-01",
+    "dosage": "75mg tablets",
+    "description": "Low-dose aspirin for cardiovascular protection",
+    "qr_filename": "qr_PC-ASP-240701-001.png",
+    "qr_security_data": {
+      "signed_hash": "a1b2c3d4e5f6g7h8i9j0",
+      "timestamp": "2025-07-09T11:00:01.894768"
+    },
+    "blockchain_hash": "0x1a2b3c4d5e6f7890abcdef1234567890fedcba",
+    "blockchain_tx": "0xabcdef1234567890fedcba0987654321",
+    "upload_date": "2025-06-29T11:00:01.894771",
+    "scan_count": 15,
+    "last_scanned": "2025-07-09T09:00:01.894783",
+    "security_level": "ultra_high",
+    "ai_verified": true
+  },
+  {
+    "batch_id": "PC-PAR-240615-002",
+    "medicine_name": "Paracetamol 500mg",
+    "manufacturer_id": "a9855b88-6fa2-4067-9e06-f8e017b75124",
+    "manufacturer_name": "PharmaCorp Industries",
+    "manufacturer_license": "PHM-2024-001-DELHI",
+    "manufacturing_date": "2024-06-15",
+    "expiry_date": "2026-06-15",
+    "dosage": "500mg tablets",
+    "description": "Pain relief and fever reducer",
+    "qr_filename": "qr_PC-PAR-240615-002.png",
+    "qr_security_data": {
+      "signed_hash": "b2c3d4e5f6g7h8i9j0k1",
+      "timestamp": "2025-07-09T11:00:01.894790"
+    },
+    "blockchain_hash": "0x2b3c4d5e6f7890abcdef1234567890fedcbb",
+    "blockchain_tx": "0xbcdef1234567890fedcba0987654322",
+    "upload_date": "2025-07-04T11:00:01.894793",
+    "scan_count": 8,
+    "last_scanned": "2025-07-09T05:00:01.894796",
+    "security_level": "ultra_high",
+    "ai_verified": true
+  },
+  {
+    "batch_id": "ML-AMX-240620-001",
+    "medicine_name": "Amoxicillin 250mg",
+    "manufacturer_id": "75bc8413-a353-46f2-8b23-dfe3b68c8ecb",
+    "manufacturer_name": "MediLife Pharmaceuticals",
+    "manufacturer_license": "MED-2024-002-MUMBAI",
+    "manufacturing_date": "2024-06-20",
+    "expiry_date": "2025-12-20",
+    "dosage": "250mg capsules",
+    "description": "Broad-spectrum antibiotic",
+    "qr_filename": "qr_ML-AMX-240620-001.png",
+    "qr_security_data": {
+      "signed_hash": "c3d4e5f6g7h8i9j0k1l2",
+      "timestamp": "2025-07-09T11:00:01.894801"
+    },
+    "blockchain_hash": "0x3c4d5e6f7890abcdef1234567890fedcbc",
+    "blockchain_tx": "0xcdef1234567890fedcba0987654323",
+    "upload_date": "2025-07-06T11:00:01.894803",
+    "scan_count": 25,
+    "last_scanned": "2025-07-09T10:30:01.894805",
+    "security_level": "ultra_high",
+    "ai_verified": true
+  }
+]

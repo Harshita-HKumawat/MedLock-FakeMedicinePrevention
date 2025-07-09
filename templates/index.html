@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="hero-section text-center py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 mb-4">
+                    <i class="fas fa-shield-alt text-primary me-3"></i>
+                    Welcome to MedLock
+                </h1>
+                <p class="lead mb-4">
+                    The most trusted medicine authenticity platform ensuring genuine pharmaceuticals reach patients safely.
+                </p>
+                <div class="row g-3 justify-content-center">
+                    {% if not session.manufacturer_id and not session.admin %}
+                    <div class="col-auto">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Register as Manufacturer
+                        </a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 py-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-user-check fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Manufacturer Registration</h5>
+                    <p class="card-text">Secure registration process with document verification and admin approval for pharmaceutical manufacturers.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-qrcode fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">QR Code Generation</h5>
+                    <p class="card-text">Generate unique QR codes for each medicine batch enabling easy verification and tracking.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-search fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Instant Verification</h5>
+                    <p class="card-text">Quick and reliable verification system to check medicine authenticity using QR codes.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row py-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">How It Works</h2>
+            <div class="row g-4">
+                <div class="col-lg-3 text-center">
+                    <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">1</span>
+                    </div>
+                    <h5>Register</h5>
+                    <p>Manufacturers register with required documents and await admin approval.</p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <div class="step-number bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">2</span>
+                    </div>
+                    <h5>Upload Batches</h5>
+                    <p>Approved manufacturers upload batch information and generate QR codes.</p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <div class="step-number bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">3</span>
+                    </div>
+                    <h5>Attach QR Codes</h5>
+                    <p>QR codes are attached to medicine packages for verification.</p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <div class="step-number bg-warning text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                        <span class="fw-bold">4</span>
+                    </div>
+                    <h5>Verify</h5>
+                    <p>Customers scan QR codes to instantly verify medicine authenticity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row py-5">
+        <div class="col-12 text-center">
+            <h2 class="mb-4">Quick Verification</h2>
+            <p class="lead mb-4">Have a batch ID? Verify it instantly:</p>
+            <form class="d-inline-flex gap-2" action="#" method="GET">
+                <input type="text" class="form-control" placeholder="Enter Batch ID" id="batchIdInput" style="max-width: 300px;">
+                <button type="button" class="btn btn-primary" onclick="verifyBatch()">
+                    <i class="fas fa-search me-1"></i>Verify
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function verifyBatch() {
+    const batchId = document.getElementById('batchIdInput').value.trim();
+    if (batchId) {
+        window.location.href = `/verify/${batchId}`;
+    } else {
+        alert('Please enter a batch ID');
+    }
+}
+
+document.getElementById('batchIdInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        verifyBatch();
+    }
+});
+</script>
+{% endblock %}

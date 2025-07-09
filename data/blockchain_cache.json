@@ -1,0 +1,46 @@
+{
+  "BATCH1233455": {
+    "batch_id": "BATCH1233455",
+    "data_hash": "c82fd783892bde6c812ba9439d8a0189c7fe7d10ea4805f31042ad993fa23003",
+    "manufacturer": "DL-2222-6666-4444-8888",
+    "timestamp": 1752077086,
+    "block_number": "mumbai_block_1752077086",
+    "transaction_hash": "0x5f31a5b15b6ffda05d5e8f94208490d2c57357e5f7d014f1ebea0d51cac8f194",
+    "gas_used": 42000,
+    "status": "confirmed",
+    "network": "Polygon Mumbai Testnet (Simulated)"
+  },
+  "BATCH12334678": {
+    "batch_id": "BATCH12334678",
+    "data_hash": "afa419632bc3624fb642ec66bf1bea2d698f51acb29de0b6dcad8b8856b4b714",
+    "manufacturer": "DL-2222-6666-4444-8888",
+    "timestamp": 1752078114,
+    "block_number": "mumbai_block_1752078114",
+    "transaction_hash": "0xee7434f038607e33ec12ecc431ab26b1d6ebc35c7aae156b8fa4d9fb235f3ffc",
+    "gas_used": 42000,
+    "status": "confirmed",
+    "network": "Polygon Mumbai Testnet (Simulated)"
+  },
+  "BATCH123347854": {
+    "batch_id": "BATCH123347854",
+    "data_hash": "7b3709aba75b1dd7a1bd4440ba7cc3f9ac114d9f183a35da97c63054f29103ac",
+    "manufacturer": "DL-2222-6666-4444-8888",
+    "timestamp": 1752083010,
+    "block_number": "mumbai_block_1752083010",
+    "transaction_hash": "0xfecbc951fbd3c6d02c0bb6e065591c2bb2a1ffebfd88f04f2049b4a0afd4cec7",
+    "gas_used": 42000,
+    "status": "confirmed",
+    "network": "Polygon Mumbai Testnet (Simulated)"
+  },
+  "BATCH": {
+    "batch_id": "BATCH",
+    "data_hash": "6055a65d2d39d63541a94dbca0592986eae0f0ccf8a54386ebd69160263ceac2",
+    "manufacturer": "DL-2222-6666-4444-8888",
+    "timestamp": 1752083031,
+    "block_number": "mumbai_block_1752083031",
+    "transaction_hash": "0xe17ccb3296ced69db38919e9a8aa00f865d6b15ca914cb96cf3e5b7f9916df36",
+    "gas_used": 42000,
+    "status": "confirmed",
+    "network": "Polygon Mumbai Testnet (Simulated)"
+  }
+}

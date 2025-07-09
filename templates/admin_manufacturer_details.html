@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Manufacturer Details - Admin - MedLock{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-building me-2"></i>Manufacturer Details</h2>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Manufacturer Information -->
+    <div class="card mb-4">
+        <div class="card-header {% if manufacturer.approved %}bg-success text-white{% else %}bg-warning{% endif %}">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">{{ manufacturer.company_name }}</h4>
+                <div>
+                    {% if manufacturer.approved %}
+                        <span class="badge bg-light text-dark">Approved</span>
+                    {% else %}
+                        <span class="badge bg-light text-dark">Pending</span>
+                    {% endif %}
+                    {% if manufacturer.get('approval_status') == 'approved' %}
+                        <span class="badge bg-info">Auto-Approved</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <strong>Email Address:</strong><br>
+                    {{ manufacturer.email }}
+                    {% if manufacturer.get('email_verified') %}
+                    <i class="fas fa-check-circle text-success ms-1" title="Email Verified"></i>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <strong>GST Number:</strong><br>
+                    <code>{{ manufacturer.gst_number }}</code>
+                </div>
+                <div class="col-md-6">
+                    <strong>Drug License Number:</strong><br>
+                    <code>{{ manufacturer.license_number }}</code>
+                </div>
+                <div class="col-md-6">
+                    <strong>Registration Date:</strong><br>
+                    <small class="text-muted">{{ manufacturer.created_at[:19].replace('T', ' ') }}</small>
+                </div>
+                {% if manufacturer.get('approved_at') %}
+                <div class="col-md-6">
+                    <strong>Approval Date:</strong><br>
+                    <small class="text-muted">{{ manufacturer.approved_at[:19].replace('T', ' ') }}</small>
+                </div>
+                <div class="col-md-6">
+                    <strong>Approved By:</strong><br>
+                    <span class="text-muted">{{ manufacturer.get('approved_by', 'System') }}</span>
+                </div>
+                {% endif %}
+                {% if manufacturer.get('revoked_at') %}
+                <div class="col-md-6">
+                    <strong>Revocation Date:</strong><br>
+                    <small class="text-danger">{{ manufacturer.revoked_at[:19].replace('T', ' ') }}</small>
+                </div>
+                <div class="col-md-6">
+                    <strong>Revoked By:</strong><br>
+                    <span class="text-danger">{{ manufacturer.get('revoked_by', 'System') }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                <h6>License Document</h6>
+                <a href="{{ url_for('view_document', filename=manufacturer.license_file) }}" 
+                   class="btn btn-outline-primary" target="_blank">
+                    <i class="fas fa-file-alt me-1"></i>View License Document
+                </a>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-4 d-flex gap-2 flex-wrap">
+                {% if not manufacturer.approved %}
+                <a href="{{ url_for('approve_manufacturer', manufacturer_id=manufacturer.id) }}" 
+                   class="btn btn-success">
+                    <i class="fas fa-check me-1"></i>Approve Manufacturer
+                </a>
+                <a href="{{ url_for('reject_manufacturer', manufacturer_id=manufacturer.id) }}" 
+                   class="btn btn-danger" 
+                   onclick="return confirm('Are you sure you want to reject this manufacturer?')">
+                    <i class="fas fa-times me-1"></i>Reject Manufacturer
+                </a>
+                {% else %}
+                <a href="{{ url_for('revoke_manufacturer', manufacturer_id=manufacturer.id) }}" 
+                   class="btn btn-warning" 
+                   onclick="return confirm('Are you sure you want to revoke approval for this manufacturer?')">
+                    <i class="fas fa-ban me-1"></i>Revoke Approval
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h4>{{ total_batches }}</h4>
+                    <small>Total Batches</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h4>{{ total_scans }}</h4>
+                    <small>Total Scans</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h4>{{ batches|selectattr('scan_count')|list|length }}</h4>
+                    <small>Active Batches</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Batch List -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-pills me-2"></i>Medicine Batches</h5>
+        </div>
+        <div class="card-body">
+            {% if batches %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Batch ID</th>
+                            <th>Medicine Name</th>
+                            <th>Expiry Date</th>
+                            <th>Scan Count</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for batch in batches %}
+                        <tr>
+                            <td><code>{{ batch.batch_id }}</code></td>
+                            <td><strong>{{ batch.medicine_name }}</strong></td>
+                            <td>
+                                <span class="{% if batch.expiry_date < moment().format('YYYY-MM-DD') %}text-danger{% else %}text-success{% endif %}">
+                                    {{ batch.expiry_date }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ batch.get('scan_count', 0) }}</span>
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ batch.created_at[:19].replace('T', ' ') }}</small>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('admin_batch_details', batch_id=batch.batch_id) }}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i> Details
+                                </a>
+                                <a href="{{ url_for('verify_batch', batch_id=batch.batch_id) }}" 
+                                   class="btn btn-sm btn-outline-success" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Verify
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-pills fa-3x text-muted mb-3"></i>
+                <h6 class="text-muted">No batches created yet</h6>
+                <p class="text-muted">This manufacturer has not uploaded any medicine batches.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function moment() {
+    return {
+        format: function(format) {
+            return new Date().toISOString().split('T')[0];
+        }
+    }
+}
+</script>
+{% endblock %}

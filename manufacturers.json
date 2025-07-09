@@ -1,0 +1,45 @@
+[
+  {
+    "id": "a9855b88-6fa2-4067-9e06-f8e017b75124",
+    "company_name": "PharmaCorp Industries",
+    "email": "contact@pharmacorp.pharma",
+    "license_number": "PHM-2024-001-DELHI",
+    "gst_number": "27ABCDE1234F1Z5",
+    "password_hash": "scrypt:32768:8:1$mSmjbgYHBMplzknu$de5f5081c9a178c01e41fef06ba957993109d3a0c202ab40c64242ee71867b10159140e7535d91757ee7c2cc8459c65dd95107b8c49be82bfab47eebb617e2f4",
+    "approved": true,
+    "created_at": "2025-06-09T11:00:01.716090",
+    "approved_at": "2025-06-14T11:00:01.716112",
+    "approved_by": "admin@medlock.com",
+    "address": "Sector 8, Industrial Area, New Delhi - 110077",
+    "phone": "+91-11-4567-8900",
+    "license_document": "pharmacorp_license.pdf"
+  },
+  {
+    "id": "75bc8413-a353-46f2-8b23-dfe3b68c8ecb",
+    "company_name": "MediLife Pharmaceuticals",
+    "email": "info@medilife.med",
+    "license_number": "MED-2024-002-MUMBAI",
+    "gst_number": "27FGHIJ5678K2L6",
+    "password_hash": "scrypt:32768:8:1$hpIBGWPadIzyHE41$fd8654558fa2d9e49ee3611e462547ab537a3729c500e480d123efc2d775aa45879c7ca12c41cc590600a03205660709ee0c371d48ff8fb6d148bb981512f066",
+    "approved": true,
+    "created_at": "2025-06-19T11:00:01.805764",
+    "approved_at": "2025-06-24T11:00:01.805786",
+    "approved_by": "admin@medlock.com",
+    "address": "Andheri Industrial Estate, Mumbai - 400053",
+    "phone": "+91-22-2345-6789",
+    "license_document": "medilife_license.pdf"
+  },
+  {
+    "id": "ed751796-b526-4f81-9f0b-676d761a3cd9",
+    "company_name": "BioGenesis Labs",
+    "email": "regulatory@biogenesis.pharma",
+    "license_number": "PHARM-2024-003-BANGALORE",
+    "gst_number": "29KLMNO9012P3Q7",
+    "password_hash": "scrypt:32768:8:1$9I1ieXDbOT25phuv$12d1e75ea97f40c89ce518f8ea8f96869326185c5756717e58c3033c80d5aeaf00f35e707f5170ba831e9f8a4a9c52668344fa58d63398b61ab378ea10257247",
+    "approved": false,
+    "created_at": "2025-07-09T11:00:01.894746",
+    "address": "Electronic City, Bangalore - 560100",
+    "phone": "+91-80-1234-5678",
+    "license_document": "biogenesis_license.pdf"
+  }
+]

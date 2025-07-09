@@ -1,0 +1,152 @@
+# replit.md
+
+## Overview
+
+MedLock is an enhanced Flask-based medicine authenticity platform with advanced security features. The system provides pharmaceutical manufacturers with secure registration, automated batch management, and cryptographic QR code generation. It includes comprehensive admin monitoring, AI-powered scan behavior analysis, and robust verification systems to prevent counterfeiting and ensure medicine safety.
+
+## System Architecture
+
+### Frontend Architecture
+- **Template Engine**: Jinja2 templates with Flask
+- **CSS Framework**: Bootstrap (dark theme via CDN)
+- **Icons**: Font Awesome 6.0.0
+- **Client-side**: Vanilla HTML/CSS/JS with Bootstrap components
+- **Theme**: Dark theme implementation using bootstrap-agent-dark-theme
+
+### Backend Architecture
+- **Framework**: Flask (Python web framework)
+- **Session Management**: Flask sessions with server-side storage
+- **Authentication**: Password hashing using Werkzeug security utilities
+- **File Handling**: Werkzeug secure filename utilities
+- **Logging**: Python's built-in logging module
+
+### Enhanced Data Storage Solutions
+- **Primary Storage**: JSON file-based storage with enhanced security
+  - `manufacturers.json`: Enhanced manufacturer data with approval tracking
+  - `batches.json`: Comprehensive batch data with security tokens
+  - `scan_logs.json`: Complete scan activity monitoring
+  - `email_verifications.json`: Temporary verification code storage
+- **File Storage**: Secure local filesystem management
+  - `static/uploads/`: License documents with timestamp prefixes
+  - `static/qr_codes/`: Secure QR codes with cryptographic tokens
+  - `logs/`: System logs and monitoring data
+
+### Authentication and Authorization
+- **Enhanced Security**: Multi-layer authentication system
+- **Admin Access**: Hardcoded credentials (demo setup)
+  - Email: admin@medlock.com
+  - Password: admin123
+- **Manufacturer Authentication**: 
+  - Email/password with secure hashing
+  - Email verification required for all registrations
+  - Semi-automatic approval for trusted manufacturers
+- **Session Management**: Secure Flask sessions with enhanced validation
+- **Authorization Levels**: Admin and Manufacturer roles with granular permissions
+
+## Key Components
+
+### Enhanced User Management
+- **Semi-Automatic Registration**: Email verification + trusted manufacturer auto-approval
+- **Email Verification**: 6-digit codes with 15-minute expiration
+- **Trusted Manufacturer System**: Auto-approval for verified domains and GST numbers
+- **Admin Override**: Manual approval/rejection for all registrations
+- **Revocation System**: Admin can revoke manufacturer approvals
+
+### Advanced Batch Management
+- **Enhanced Batch Creation**: Additional fields (manufacturing date, dosage, description)
+- **Secure QR Generation**: Cryptographic tokens tied to manufacturer license
+- **License Validation**: Real-time validation of manufacturer licenses
+- **Expiry Monitoring**: Automatic expiry date validation and warnings
+
+### Comprehensive Security System
+- **Cryptographic QR Codes**: HMAC-SHA256 tokens prevent counterfeiting
+- **Security Token Validation**: Time-based tokens with 24-hour validity
+- **Phone-Compatible URLs**: Proper domain URLs for mobile QR scanning
+- **Tamper Detection**: Invalid token detection and security alerts
+
+### AI-Powered Scan Monitoring
+- **Scan Activity Logging**: IP, timestamp, user agent tracking
+- **Suspicious Pattern Detection**: 
+  - Excessive scans from single IP
+  - High-frequency scanning patterns
+  - Diverse geographic scanning (bot detection)
+- **Real-time Alerts**: Immediate flagging of suspicious batches
+- **Behavioral Analysis**: ML-style pattern recognition for fraud detection
+
+### Enhanced Admin Dashboard
+- **Comprehensive Statistics**: Real-time metrics and activity monitoring
+- **Tabbed Interface**: Pending, approved, activity, and popular batch views
+- **Suspicious Activity Alerts**: Immediate visibility of flagged batches
+- **Detailed Logging**: Complete scan history and manufacturer details
+- **Advanced Management**: Manufacturer details, batch monitoring, scan logs
+
+## Data Flow
+
+1. **Manufacturer Registration**:
+   - User submits registration form with license document
+   - Data stored in `manufacturers.json` with "pending" status
+   - Admin reviews and approves/rejects
+
+2. **Batch Creation**:
+   - Approved manufacturer uploads batch details
+   - System generates unique batch ID
+   - QR code created linking to verification URL
+   - Batch data stored in `batches.json`
+
+3. **Verification Process**:
+   - Public scans QR code or enters batch ID
+   - System looks up batch in `batches.json`
+   - Returns verification status and batch details
+
+## External Dependencies
+
+### Python Packages
+- **Flask**: Web framework
+- **qrcode**: QR code generation
+- **Werkzeug**: Security utilities and file handling
+- **Pillow**: Image processing (dependency of qrcode)
+
+### CDN Dependencies
+- **Bootstrap**: `bootstrap-agent-dark-theme.min.css`
+- **Font Awesome**: `font-awesome/6.0.0/css/all.min.css`
+
+### Environment Variables
+- `SESSION_SECRET`: Flask session secret key (defaults to demo key)
+
+## Deployment Strategy
+
+### Current Setup
+- **Development Mode**: Flask debug mode enabled
+- **Host Configuration**: Bound to `0.0.0.0:5000` for container compatibility
+- **Static Files**: Served directly by Flask (development setup)
+
+### File Structure
+```
+/
+├── app.py              # Main Flask application
+├── main.py             # Entry point
+├── manufacturers.json  # Manufacturer data
+├── batches.json       # Batch data
+├── templates/         # Jinja2 templates
+└── static/
+    ├── uploads/       # License documents
+    └── qr_codes/      # Generated QR codes
+```
+
+### Scalability Considerations
+- File-based storage suitable for small to medium scale
+- JSON storage may need migration to proper database for production
+- Static file serving should use CDN or web server in production
+
+## Changelog
+
+```
+Changelog:
+- July 08, 2025. Initial setup
+```
+
+## User Preferences
+
+```
+Preferred communication style: Simple, everyday language.
+```

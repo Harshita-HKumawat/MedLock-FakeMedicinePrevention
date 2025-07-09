@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Scan Logs - Admin - MedLock{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-list me-2"></i>Scan Activity Logs</h2>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-primary">
+            <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+        </a>
+    </div>
+
+    {% if scan_logs %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Recent Scan Activity (Last 100 scans)</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Batch ID</th>
+                            <th>Medicine</th>
+                            <th>Manufacturer</th>
+                            <th>IP Address</th>
+                            <th>User Agent</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in scan_logs %}
+                        <tr>
+                            <td>
+                                <small class="text-muted">{{ log.timestamp[:19].replace('T', ' ') }}</small>
+                            </td>
+                            <td>
+                                <code class="bg-primary text-white px-2 py-1 rounded">{{ log.batch_id }}</code>
+                            </td>
+                            <td>
+                                <strong>{{ log.batch_info.medicine_name }}</strong>
+                            </td>
+                            <td>
+                                <span class="text-muted">{{ log.batch_info.company_name }}</span>
+                            </td>
+                            <td>
+                                <code>{{ log.ip_address }}</code>
+                            </td>
+                            <td>
+                                <small class="text-muted" title="{{ log.user_agent }}">
+                                    {% if 'Mobile' in log.user_agent %}
+                                        <i class="fas fa-mobile-alt text-info"></i> Mobile
+                                    {% elif 'Chrome' in log.user_agent %}
+                                        <i class="fab fa-chrome text-warning"></i> Chrome
+                                    {% elif 'Firefox' in log.user_agent %}
+                                        <i class="fab fa-firefox text-danger"></i> Firefox
+                                    {% elif 'Safari' in log.user_agent %}
+                                        <i class="fab fa-safari text-primary"></i> Safari
+                                    {% else %}
+                                        <i class="fas fa-globe text-secondary"></i> Other
+                                    {% endif %}
+                                </small>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('admin_batch_details', batch_id=log.batch_id) }}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ url_for('verify_batch', batch_id=log.batch_id) }}" 
+                                   class="btn btn-sm btn-outline-success" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h5>{{ scan_logs|length }}</h5>
+                    <small>Recent Scans</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <h5>{{ scan_logs|map(attribute='ip_address')|unique|list|length }}</h5>
+                    <small>Unique IPs</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h5>{{ scan_logs|map(attribute='batch_id')|unique|list|length }}</h5>
+                    <small>Batches Scanned</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h5>{{ scan_logs|selectattr('user_agent', 'search', 'Mobile')|list|length }}</h5>
+                    <small>Mobile Scans</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-list fa-4x text-muted mb-3"></i>
+        <h4 class="text-muted">No scan logs available</h4>
+        <p class="text-muted">Scan activity will appear here as users verify medicine batches.</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Auto-refresh every 30 seconds
+setInterval(function() {
+    window.location.reload();
+}, 30000);
+</script>
+{% endblock %}

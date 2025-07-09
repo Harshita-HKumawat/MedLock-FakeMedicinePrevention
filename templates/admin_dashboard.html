@@ -1,0 +1,461 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - MedLock{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 text-center mb-4">
+                <i class="fas fa-user-shield me-3"></i>Admin Dashboard
+            </h1>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <i class="fas fa-building feature-icon"></i>
+                <div class="stats-number">{{ stats.approved_count }}</div>
+                <h5>Approved Manufacturers</h5>
+                <small class="text-muted">{{ stats.auto_approved_count }} auto-approved</small>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <i class="fas fa-clock feature-icon"></i>
+                <div class="stats-number">{{ stats.pending_count }}</div>
+                <h5>Pending Approvals</h5>
+                <small class="text-muted">Awaiting manual review</small>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <i class="fas fa-pills feature-icon"></i>
+                <div class="stats-number">{{ total_batches }}</div>
+                <h5>Total Batches</h5>
+                <small class="text-muted">Medicine batches uploaded</small>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="stats-card">
+                <i class="fas fa-qrcode feature-icon"></i>
+                <div class="stats-number">{{ total_scans }}</div>
+                <h5>QR Scans</h5>
+                <small class="text-muted">{{ stats.recent_scans_count }} in last 24h</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mb-5">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Manufacturer Status</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="manufacturerChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Scan Activity (Last 7 Days)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="scanChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Section -->
+    {% if stats.suspicious_count > 0 %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="alert alert-danger">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Security Alerts</h5>
+                <p>{{ stats.suspicious_count }} flagged batches detected with suspicious scanning patterns.</p>
+                <a href="#flagged-batches" class="btn btn-danger btn-sm">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button">
+                <i class="fas fa-clock me-2"></i>Pending Approvals ({{ stats.pending_count }})
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button">
+                <i class="fas fa-check me-2"></i>Approved ({{ stats.approved_count }})
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity" type="button">
+                <i class="fas fa-activity me-2"></i>Recent Activity
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="popular-tab" data-bs-toggle="tab" data-bs-target="#popular" type="button">
+                <i class="fas fa-fire me-2"></i>Popular Batches
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="flagged-tab" data-bs-toggle="tab" data-bs-target="#flagged" type="button">
+                <i class="fas fa-flag me-2"></i>Flagged ({{ stats.suspicious_count }})
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="adminTabsContent">
+        <!-- Pending Manufacturers -->
+        <div class="tab-pane fade show active" id="pending" role="tabpanel">
+            {% if pending_manufacturers %}
+            <div class="row">
+                {% for manufacturer in pending_manufacturers %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">{{ manufacturer.company_name }}</h6>
+                            <span class="badge bg-warning">Pending</span>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Email:</strong> {{ manufacturer.email }}</p>
+                            <p><strong>License:</strong> {{ manufacturer.license_number }}</p>
+                            <p><strong>GST:</strong> {{ manufacturer.gst_number }}</p>
+                            <p><strong>Registered:</strong> {{ manufacturer.created_at[:10] }}</p>
+                            
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('approve_manufacturer', manufacturer_id=manufacturer.id) }}" 
+                                   class="btn btn-success btn-sm">
+                                    <i class="fas fa-check me-1"></i>Approve
+                                </a>
+                                <a href="{{ url_for('reject_manufacturer', manufacturer_id=manufacturer.id) }}" 
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Are you sure you want to reject this manufacturer?')">
+                                    <i class="fas fa-times me-1"></i>Reject
+                                </a>
+                                {% if manufacturer.license_file %}
+                                <a href="{{ url_for('view_document', filename=manufacturer.license_file) }}" 
+                                   class="btn btn-info btn-sm" target="_blank">
+                                    <i class="fas fa-file me-1"></i>View License
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                <h4>No Pending Approvals</h4>
+                <p class="text-muted">All manufacturers have been processed.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Approved Manufacturers -->
+        <div class="tab-pane fade" id="approved" role="tabpanel">
+            <div class="table-responsive">
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Email</th>
+                            <th>License</th>
+                            <th>Status</th>
+                            <th>Approved</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for manufacturer in approved_manufacturers %}
+                        <tr>
+                            <td>{{ manufacturer.company_name }}</td>
+                            <td>{{ manufacturer.email }}</td>
+                            <td>{{ manufacturer.license_number }}</td>
+                            <td>
+                                {% if manufacturer.approval_status == 'approved' %}
+                                <span class="badge bg-success">Auto-Approved</span>
+                                {% else %}
+                                <span class="badge bg-primary">Manual</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ manufacturer.approved_at[:10] if manufacturer.approved_at else 'N/A' }}</td>
+                            <td>
+                                <a href="{{ url_for('revoke_manufacturer', manufacturer_id=manufacturer.id) }}" 
+                                   class="btn btn-warning btn-sm"
+                                   onclick="return confirm('Revoke approval for this manufacturer?')">
+                                    <i class="fas fa-ban me-1"></i>Revoke
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="tab-pane fade" id="activity" role="tabpanel">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent QR Scans (Last 24 Hours)</h5>
+                    <a href="{{ url_for('admin_scan_logs') }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-external-link-alt me-1"></i>View All Logs
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if recent_scans %}
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Batch ID</th>
+                                    <th>Location</th>
+                                    <th>IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for scan in recent_scans %}
+                                <tr>
+                                    <td>{{ scan.timestamp[:16].replace('T', ' ') }}</td>
+                                    <td>{{ scan.batch_id }}</td>
+                                    <td>{{ scan.location or 'Unknown' }}</td>
+                                    <td>{{ scan.ip_address }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center py-3">No recent scan activity.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Popular Batches -->
+        <div class="tab-pane fade" id="popular" role="tabpanel">
+            <div class="row">
+                {% for item in top_batches %}
+                <div class="col-lg-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ item.batch.medicine_name }}</h6>
+                                    <small class="text-muted">{{ item.batch.batch_id }}</small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-primary">{{ item.scan_count }} scans</span>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    Company: {{ item.batch.company_name }}<br>
+                                    Expiry: {{ item.batch.expiry_date }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Flagged Batches -->
+        <div class="tab-pane fade" id="flagged" role="tabpanel">
+            <div id="flagged-batches">
+                {% if suspicious_batches %}
+                {% for item in suspicious_batches %}
+                <div class="card mb-3 border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            {{ item.batch.medicine_name }} ({{ item.batch.batch_id }})
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Company:</strong> {{ item.batch.company_name }}</p>
+                                <p><strong>Expiry:</strong> {{ item.batch.expiry_date }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Suspicious Flags:</strong></p>
+                                <ul class="list-unstyled">
+                                    {% for flag in item.flags %}
+                                    <li><i class="fas fa-flag text-danger me-1"></i>{{ flag }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-warning btn-sm">
+                                <i class="fas fa-lock me-1"></i>Lock Manufacturer
+                            </button>
+                            <button class="btn btn-success btn-sm">
+                                <i class="fas fa-check me-1"></i>Clear Flag
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-shield-alt fa-3x text-success mb-3"></i>
+                    <h4>No Security Alerts</h4>
+                    <p class="text-muted">All batches are showing normal scanning patterns.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-download me-2"></i>Export Data</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="{{ url_for('export_scan_logs') }}" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fas fa-file-csv me-2"></i>Export Scan Logs (CSV)
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ url_for('export_manufacturers') }}" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fas fa-file-csv me-2"></i>Export Manufacturers (CSV)
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ url_for('export_batches') }}" class="btn btn-outline-primary w-100 mb-2">
+                                <i class="fas fa-file-csv me-2"></i>Export Batches (CSV)
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle me-2"></i>Complete Project Download</h6>
+                                <p class="mb-2">Download the entire MedLock project including all source code, templates, data files, and documentation.</p>
+                                <a href="{{ url_for('download_project') }}" class="btn btn-primary">
+                                    <i class="fas fa-download me-2"></i>Download Project (ZIP)
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Manufacturer Status Pie Chart
+const manufacturerCtx = document.getElementById('manufacturerChart').getContext('2d');
+new Chart(manufacturerCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Approved', 'Pending', 'Auto-Approved'],
+        datasets: [{
+            data: [{{ stats.approved_count - stats.auto_approved_count }}, {{ stats.pending_count }}, {{ stats.auto_approved_count }}],
+            backgroundColor: ['#10b981', '#f59e0b', '#3b82f6'],
+            borderColor: '#1f2937',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: '#f9fafb',
+                    padding: 20
+                }
+            }
+        }
+    }
+});
+
+// Scan Activity Line Chart (simulated data for demo)
+const scanCtx = document.getElementById('scanChart').getContext('2d');
+const last7Days = [];
+const scanData = [];
+for (let i = 6; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(date.getDate() - i);
+    last7Days.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+    // Simulate scan data - in real app, calculate from actual scan logs
+    scanData.push(Math.floor(Math.random() * 50) + 10);
+}
+
+new Chart(scanCtx, {
+    type: 'line',
+    data: {
+        labels: last7Days,
+        datasets: [{
+            label: 'QR Scans',
+            data: scanData,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 3,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: '#f9fafb'
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: '#9ca3af'
+                },
+                grid: {
+                    color: 'rgba(156, 163, 175, 0.2)'
+                }
+            },
+            y: {
+                ticks: {
+                    color: '#9ca3af'
+                },
+                grid: {
+                    color: 'rgba(156, 163, 175, 0.2)'
+                }
+            }
+        }
+    }
+});
+
+// Auto-refresh dashboard every 30 seconds
+setInterval(function() {
+    window.location.reload();
+}, 30000);
+</script>
+{% endblock %}

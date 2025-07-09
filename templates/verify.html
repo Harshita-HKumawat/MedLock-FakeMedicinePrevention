@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block title %}Medicine Verification - MedLock{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h1 class="display-4 mb-3">
+                    <i class="fas fa-shield-check me-3"></i>Medicine Verification
+                </h1>
+                <p class="lead">AI-Powered Blockchain Verification System</p>
+            </div>
+
+            <!-- Main Verification Result -->
+            <div class="card mb-4">
+                <div class="card-body text-center p-5">
+                    {% if verification_status == 'verified' %}
+                    <div class="verify-result verify-genuine">
+                        <i class="fas fa-check-circle fa-4x mb-3"></i>
+                        <h2 class="mb-3">✅ VERIFIED AUTHENTIC</h2>
+                        <p class="lead">This medicine is verified as genuine through blockchain technology and AI analysis.</p>
+                    </div>
+                    {% elif verification_status == 'warning' %}
+                    <div class="verify-result" style="background: linear-gradient(45deg, #f59e0b, #fbbf24); color: white;">
+                        <i class="fas fa-exclamation-triangle fa-4x mb-3"></i>
+                        <h2 class="mb-3">⚠️ CAUTION ADVISED</h2>
+                        <p class="lead">Medicine is authentic but some concerns detected. Please review warnings below.</p>
+                    </div>
+                    {% elif verification_status == 'suspicious' %}
+                    <div class="verify-result verify-counterfeit">
+                        <i class="fas fa-exclamation-triangle fa-4x mb-3"></i>
+                        <h2 class="mb-3">🚨 SUSPICIOUS ACTIVITY</h2>
+                        <p class="lead">AI analysis detected suspicious patterns. Exercise extreme caution.</p>
+                    </div>
+                    {% elif verification_status == 'tampered' %}
+                    <div class="verify-result verify-counterfeit">
+                        <i class="fas fa-ban fa-4x mb-3"></i>
+                        <h2 class="mb-3">🛑 BLOCKCHAIN TAMPERING</h2>
+                        <p class="lead">Critical security breach detected. This medicine may be counterfeit.</p>
+                    </div>
+                    {% elif verification_status == 'expired' %}
+                    <div class="verify-result" style="background: linear-gradient(45deg, #6b7280, #9ca3af); color: white;">
+                        <i class="fas fa-calendar-times fa-4x mb-3"></i>
+                        <h2 class="mb-3">📅 EXPIRED MEDICINE</h2>
+                        <p class="lead">This medicine has passed its expiry date and should not be used.</p>
+                    </div>
+                    {% elif verification_status == 'not_found' %}
+                    <div class="verify-result verify-counterfeit">
+                        <i class="fas fa-search fa-4x mb-3"></i>
+                        <h2 class="mb-3">❌ NOT FOUND</h2>
+                        <p class="lead">This batch is not registered in our secure database.</p>
+                    </div>
+                    {% else %}
+                    <div class="verify-result verify-counterfeit">
+                        <i class="fas fa-times-circle fa-4x mb-3"></i>
+                        <h2 class="mb-3">🚫 VERIFICATION FAILED</h2>
+                        <p class="lead">Unable to verify this medicine. Potential counterfeit detected.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Medicine Details -->
+            {% if batch %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-pills me-2"></i>Medicine Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Medicine Name:</strong> {{ batch.medicine_name }}</p>
+                            <p><strong>Batch ID:</strong> {{ batch.batch_id }}</p>
+                            <p><strong>Manufacturer:</strong> {{ batch.manufacturer_name }}</p>
+                            <p><strong>License:</strong> {{ batch.manufacturer_license }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Manufacturing Date:</strong> {{ batch.manufacturing_date }}</p>
+                            <p><strong>Expiry Date:</strong> {{ batch.expiry_date }}</p>
+                            <p><strong>Dosage:</strong> {{ batch.dosage }}</p>
+                            <p><strong>Total Scans:</strong> {{ scan_count }}</p>
+                        </div>
+                    </div>
+                    {% if batch.description %}
+                    <div class="mt-3">
+                        <p><strong>Description:</strong> {{ batch.description }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Security Features -->
+            {% if security_features %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Security Features Active</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                {% if security_features.blockchain_protection %}
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <span>Blockchain Protection</span>
+                                {% else %}
+                                <i class="fas fa-times-circle text-muted me-2"></i>
+                                <span class="text-muted">Blockchain Protection</span>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                {% if security_features.ai_verification %}
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <span>AI Verification</span>
+                                {% else %}
+                                <i class="fas fa-times-circle text-muted me-2"></i>
+                                <span class="text-muted">AI Verification</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-2">
+                                {% if security_features.qr_signature %}
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <span>QR Signature</span>
+                                {% else %}
+                                <i class="fas fa-times-circle text-muted me-2"></i>
+                                <span class="text-muted">QR Signature</span>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                {% if security_features.scan_monitoring %}
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                <span>Scan Monitoring</span>
+                                {% else %}
+                                <i class="fas fa-times-circle text-muted me-2"></i>
+                                <span class="text-muted">Scan Monitoring</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- AI Analysis Report -->
+            {% if ai_analysis %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-robot me-2"></i>AI Analysis Report
+                        <span class="badge bg-{{ 'success' if ai_analysis.overall_risk_score < 0.3 else 'warning' if ai_analysis.overall_risk_score < 0.7 else 'danger' }} ms-2">
+                            Risk: {{ "%.0f"|format(ai_analysis.overall_risk_score * 100) }}%
+                        </span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Batch Analysis</h6>
+                            <p><strong>Fraud Probability:</strong> {{ "%.1f"|format(ai_analysis.batch_analysis.fraud_probability * 100) }}%</p>
+                            <p><strong>Confidence:</strong> {{ ai_analysis.batch_analysis.confidence_level.title() }}</p>
+                            {% if ai_analysis.batch_analysis.analysis_details %}
+                            <ul class="list-unstyled">
+                                {% for detail in ai_analysis.batch_analysis.analysis_details %}
+                                <li><i class="fas fa-info-circle text-info me-1"></i>{{ detail }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Scan Pattern Analysis</h6>
+                            {% if ai_analysis.pattern_analysis.suspicious %}
+                            <div class="alert alert-warning">
+                                <strong>Suspicious Patterns Detected:</strong>
+                                <ul class="mb-0 mt-2">
+                                    {% for reason in ai_analysis.pattern_analysis.reasons %}
+                                    <li>{{ reason }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% else %}
+                            <p class="text-success"><i class="fas fa-check-circle me-2"></i>Normal scanning patterns detected</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <h6>{{ ai_analysis.recommendation }}</h6>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Blockchain Verification -->
+            {% if blockchain_result %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-link me-2"></i>Blockchain Verification
+                        <span class="badge bg-{{ 'success' if blockchain_verified else 'danger' }} ms-2">
+                            {{ 'Verified' if blockchain_verified else 'Failed' }}
+                        </span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if blockchain_verified %}
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i>
+                        Data integrity verified on blockchain. This medicine's information has not been tampered with.
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>CRITICAL SECURITY ALERT:</strong> Blockchain verification failed. The medicine data may have been altered.
+                    </div>
+                    {% endif %}
+                    <small class="text-muted">
+                        Stored Hash: {{ blockchain_result.stored_hash[:16] }}...<br>
+                        Current Hash: {{ blockchain_result.current_hash[:16] }}...
+                    </small>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Warnings Section -->
+            {% if warnings %}
+            <div class="card mb-4">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0 text-dark"><i class="fas fa-exclamation-triangle me-2"></i>Security Warnings</h5>
+                </div>
+                <div class="card-body">
+                    {% for warning in warnings %}
+                    <div class="alert alert-warning">
+                        {{ warning }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="text-center mb-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-home me-2"></i>Home
+                </a>
+                <button onclick="window.print()" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-print me-2"></i>Print Report
+                </button>
+            </div>
+
+            <!-- Verification Footer -->
+            <div class="text-center text-muted">
+                <small>
+                    Verified on {{ verification_time[:10] if verification_time else 'Unknown' }} via MedLock AI-Blockchain Platform<br>
+                    This verification uses advanced AI algorithms and blockchain technology for maximum security.
+                </small>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+// Add some interactive elements
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate the verification result
+    const verifyResult = document.querySelector('.verify-result');
+    if (verifyResult) {
+        verifyResult.classList.add('animate-fade-in');
+    }
+    
+    // Auto-scroll to result if coming from QR scan
+    if (window.location.hash === '#result') {
+        verifyResult?.scrollIntoView({ behavior: 'smooth' });
+    }
+});
+
+// Add print styles
+const printStyles = `
+<style media="print">
+    .btn, .card-header { display: none !important; }
+    .verify-result { break-inside: avoid; }
+    body { background: white !important; }
+    .card { border: 1px solid #ddd !important; }
+</style>
+`;
+document.head.insertAdjacentHTML('beforeend', printStyles);
+</script>
+{% endblock %}

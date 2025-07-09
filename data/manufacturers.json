@@ -1,0 +1,16 @@
+[
+  {
+    "id": "9c1ae21f-73ad-4302-a032-c25d175c8819",
+    "company_name": "palak",
+    "email": "harshita@gmail.com",
+    "gst_number": "29ABCDHTY78",
+    "license_number": "DL-2222-6666-4444-8888",
+    "password_hash": "scrypt:32768:8:1$Upj2H9TIzEtUTxZO$fb2187489d0b74d3a7beb983c6493fe6a647cfca4f71f3ce2723c59c0faec97c83b237addab34a7ff781e5b8768ff6a3032af19138b9dbe48b21333c4d61d394",
+    "license_file": "20250709_213323_Screenshot_2025-02-25_022345.png",
+    "approved": true,
+    "approval_status": "manually_approved",
+    "created_at": "2025-07-09T21:33:23.872677",
+    "approved_at": "2025-07-09T21:33:55.185717",
+    "approved_by": "admin"
+  }
+]

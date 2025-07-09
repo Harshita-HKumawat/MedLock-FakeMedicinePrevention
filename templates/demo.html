@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}Demo Test Bench - MedLock{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-4 mb-3">
+                    <i class="fas fa-flask me-3"></i>MedLock Demo Test Bench
+                </h1>
+                <p class="lead">Experience the advanced AI-powered anti-counterfeiting platform</p>
+            </div>
+
+            <!-- Quick Access Cards -->
+            <div class="row mb-5">
+                <div class="col-md-4 mb-4">
+                    <div class="stats-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h5>Admin Dashboard</h5>
+                        <p>Access comprehensive analytics, manufacturer management, and AI monitoring</p>
+                        <div class="mt-3">
+                            <strong>Login:</strong><br>
+                            <code>admin@medlock.com</code><br>
+                            <code>admin123</code>
+                        </div>
+                        <a href="{{ url_for('admin_login') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Admin Login
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="stats-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <h5>Manufacturer Portal</h5>
+                        <p>Upload medicine batches with blockchain security and generate ultra-secure QR codes</p>
+                        <div class="mt-3">
+                            <strong>Test Logins:</strong><br>
+                            <small>contact@pharmacorp.pharma / demo123</small><br>
+                            <small>info@medilife.med / demo456</small>
+                        </div>
+                        <a href="{{ url_for('login') }}" class="btn btn-success mt-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Manufacturer Login
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="stats-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <h5>QR Verification</h5>
+                        <p>Test the AI-powered verification system with blockchain integrity checks</p>
+                        <div class="mt-3">
+                            <strong>Try scanning or entering:</strong><br>
+                            <code>PC-ASP-240701-001</code>
+                        </div>
+                        <a href="{{ url_for('index') }}#verify" class="btn btn-warning mt-3">
+                            <i class="fas fa-search me-2"></i>Verify Medicine
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Batches Section -->
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-pills me-2"></i>Available Test Batches</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Aspirin 75mg</h6>
+                                    <p class="text-muted small">PharmaCorp Industries</p>
+                                    <div class="mb-3">
+                                        <img src="{{ url_for('static', filename='qr_codes/qr_PC-ASP-240701-001.png') }}" 
+                                             alt="QR Code" class="img-fluid" style="max-width: 150px;">
+                                    </div>
+                                    <p><strong>Batch ID:</strong> PC-ASP-240701-001</p>
+                                    <p class="text-success"><i class="fas fa-shield-check"></i> Ultra-High Security</p>
+                                    <a href="{{ url_for('verify_batch', batch_id='PC-ASP-240701-001') }}" 
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fas fa-check-circle me-1"></i>Verify Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Paracetamol 500mg</h6>
+                                    <p class="text-muted small">PharmaCorp Industries</p>
+                                    <div class="mb-3">
+                                        <img src="{{ url_for('static', filename='qr_codes/qr_PC-PAR-240615-002.png') }}" 
+                                             alt="QR Code" class="img-fluid" style="max-width: 150px;">
+                                    </div>
+                                    <p><strong>Batch ID:</strong> PC-PAR-240615-002</p>
+                                    <p class="text-success"><i class="fas fa-shield-check"></i> Ultra-High Security</p>
+                                    <a href="{{ url_for('verify_batch', batch_id='PC-PAR-240615-002') }}" 
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fas fa-check-circle me-1"></i>Verify Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h6 class="card-title">Amoxicillin 250mg</h6>
+                                    <p class="text-muted small">MediLife Pharmaceuticals</p>
+                                    <div class="mb-3">
+                                        <img src="{{ url_for('static', filename='qr_codes/qr_ML-AMX-240620-001.png') }}" 
+                                             alt="QR Code" class="img-fluid" style="max-width: 150px;">
+                                    </div>
+                                    <p><strong>Batch ID:</strong> ML-AMX-240620-001</p>
+                                    <p class="text-success"><i class="fas fa-shield-check"></i> Ultra-High Security</p>
+                                    <a href="{{ url_for('verify_batch', batch_id='ML-AMX-240620-001') }}" 
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fas fa-check-circle me-1"></i>Verify Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Features Showcase -->
+            <div class="card mb-5">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Advanced Security Features</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon me-3" style="font-size: 2rem;">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">AI-Powered Fraud Detection</h6>
+                                    <p class="text-muted mb-0">Machine learning algorithms analyze batch patterns and detect counterfeit medicines using behavioral analysis.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon me-3" style="font-size: 2rem;">
+                                    <i class="fas fa-link"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Blockchain Verification</h6>
+                                    <p class="text-muted mb-0">Immutable records on Polygon blockchain ensure data integrity and prevent tampering.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon me-3" style="font-size: 2rem;">
+                                    <i class="fas fa-signature"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Cryptographic QR Signatures</h6>
+                                    <p class="text-muted mb-0">HMAC-SHA256 signed QR codes with time-based tokens that cannot be replicated by counterfeiters.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="feature-icon me-3" style="font-size: 2rem;">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1">Real-time Monitoring</h6>
+                                    <p class="text-muted mb-0">Advanced scan pattern analysis detects suspicious activities and potential distribution fraud.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Instructions -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-play-circle me-2"></i>Demo Instructions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-step-forward me-2"></i>Quick Demo Steps:</h6>
+                            <ol>
+                                <li><strong>Admin Dashboard:</strong> Login as admin to see comprehensive analytics and AI monitoring</li>
+                                <li><strong>Manufacturer Portal:</strong> Login as a manufacturer to upload new batches with blockchain security</li>
+                                <li><strong>QR Verification:</strong> Scan or enter a batch ID to see AI-powered verification in action</li>
+                                <li><strong>Security Features:</strong> Observe blockchain verification, AI analysis, and fraud detection reports</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-mobile-alt me-2"></i>Mobile Testing:</h6>
+                            <p>Use your phone's camera to scan the QR codes above. Each QR contains:</p>
+                            <ul>
+                                <li>Cryptographic security signature</li>
+                                <li>Batch verification URL</li>
+                                <li>Location tracking parameters</li>
+                                <li>Tamper-proof hash verification</li>
+                            </ul>
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Pro Tip:</strong> Try scanning the same QR multiple times to see the AI pattern analysis in action!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add some interactive effects
+    const cards = document.querySelectorAll('.stats-card, .card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}
